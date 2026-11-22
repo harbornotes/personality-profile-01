@@ -52,7 +52,7 @@
   }
 
   /* 目次 */
-  .toc { padding: 12px 12px 14px; margin-top: 10px; scroll-margin-top: 10px; }
+  .toc { padding: 12px 12px 14px; margin-top: 10px; scroll-margin-top: 62px; }
   .toc-label { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--ink-sub); margin: 0 0 8px 2px; }
   .toc ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .toc a {
@@ -66,7 +66,7 @@
   .toc li.wide { grid-column: 1 / -1; }
 
   /* 章 */
-  .chapter { padding: 16px 14px 18px; margin-top: 14px; scroll-margin-top: 10px; }
+  .chapter { padding: 16px 14px 18px; margin-top: 14px; scroll-margin-top: 62px; }
   .ch-head { display: flex; align-items: baseline; gap: 10px; padding-bottom: 8px; border-bottom: 2px solid var(--ai); }
   .ch-no { font-family: "Noto Serif JP", "Yu Mincho", serif; font-size: 24px; font-weight: 700; color: var(--ai); line-height: 1; }
   .ch-head h2 { font-family: "Noto Serif JP", "Yu Mincho", serif; font-size: 21px; line-height: 1.4; margin: 0; flex: 1;
@@ -176,9 +176,60 @@
     display: inline-block; text-decoration: none; font-size: 14px; font-weight: 700; color: var(--ai);
     background: var(--sheet); border: 1px solid var(--rule); border-radius: 999px; padding: 8px 18px;
   }
+
+  /* 上部に固定する案内 */
+  .fixnav { position: sticky; top: 0; z-index: 50; background: rgba(255, 253, 249, 0.97);
+            border-bottom: 1px solid var(--rule); box-shadow: 0 2px 8px rgba(60, 45, 30, 0.07); }
+  .fixnav-prog { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0; background: var(--ai); }
+
+  .bar-in { position: relative; max-width: 560px; margin: 0 auto; height: 52px; display: flex; align-items: center; gap: 10px; padding: 0 10px 0 12px; }
+  .bar-cur { flex: 1; min-width: 0; display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--ink); }
+  .bar-no { flex-shrink: 0; min-width: 28px; height: 28px; padding: 0 6px; border-radius: 8px; background: var(--ai); color: #FFFFFF;
+            font-family: "Noto Serif JP", "Yu Mincho", serif; font-size: 16px; font-weight: 700;
+            display: inline-flex; align-items: center; justify-content: center; }
+  .bar-no.warn { background: var(--beni); }
+  .bar-no[hidden] { display: none; }
+  .bar-title { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-btn { flex-shrink: 0; display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 14px;
+             border: 1px solid var(--ai-line); border-radius: 999px; background: #FFFFFF; color: var(--ai);
+             font-size: 14px; font-weight: 700; text-decoration: none; }
+  .bar-btn i { display: inline-block; width: 14px; height: 2px; background: currentColor; border-radius: 1px;
+               box-shadow: 0 -5px 0 currentColor, 0 5px 0 currentColor; }
+  .bar-btn[aria-expanded="true"] { background: var(--ai); color: #FFFFFF; border-color: var(--ai); }
+  .bar-menu { position: absolute; top: 100%; left: 0; right: 0; background: var(--sheet);
+              border-bottom: 1px solid var(--rule); box-shadow: 0 12px 24px rgba(60, 45, 30, 0.18);
+              max-height: calc(100vh - 64px); overflow-y: auto; }
+  .bar-menu[hidden] { display: none; }
+  .bar-menu ol { list-style: none; max-width: 560px; margin: 0 auto; padding: 8px 10px 12px; }
+  .bar-menu a { display: flex; align-items: center; gap: 12px; min-height: 46px; padding: 6px 12px; border-radius: 10px;
+                text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 700; line-height: 1.4; }
+  .bar-menu a b { font-family: "Noto Serif JP", "Yu Mincho", serif; font-size: 16px; color: var(--ai); width: 14px; text-align: center; flex-shrink: 0; }
+  .bar-menu a.warn b { color: var(--beni); }
+  .bar-menu a.on { background: var(--ai-soft); }
+  .bar-menu a.warn.on { background: var(--beni-soft); }
 </style>
 </head>
 <body>
+<header class="fixnav" id="fixnav">
+  <div class="bar-in">
+    <a class="bar-cur" href="#toc"><span class="bar-no" id="barNo" hidden></span><span class="bar-title" id="barTitle">個人プロフィール</span></a>
+    <a class="bar-btn" id="barBtn" href="#toc" role="button" aria-expanded="false" aria-controls="barMenu"><i></i>目次</a>
+  </div>
+  <nav class="bar-menu" id="barMenu" aria-label="章の一覧" hidden>
+    <ol>
+      <li><a class="" href="#ch1" data-ch="ch1"><b>1</b>価値観・人生観</a></li>
+      <li><a class="" href="#ch2" data-ch="ch2"><b>2</b>判断と行動の原則</a></li>
+      <li><a class="" href="#ch3" data-ch="ch3"><b>3</b>思考特性・強み</a></li>
+      <li><a class="warn" href="#ch4" data-ch="ch4"><b>4</b>弱み・認知バイアス</a></li>
+      <li><a class="" href="#ch5" data-ch="ch5"><b>5</b>家族</a></li>
+      <li><a class="" href="#ch6" data-ch="ch6"><b>6</b>趣味・関心</a></li>
+      <li><a class="" href="#ch7" data-ch="ch7"><b>7</b>基本情報</a></li>
+      <li><a class="" href="#ch8" data-ch="ch8"><b>8</b>AIに期待すること・主な利用目的</a></li>
+      <li><a class="" href="#ch9" data-ch="ch9"><b>9</b>扱いのルールと詳しい記録</a></li>
+    </ol>
+  </nav>
+  <div class="fixnav-prog" id="navProg"></div>
+</header>
 <main class="page" id="top">
 
   <header class="cover">
@@ -207,7 +258,6 @@
     <div class="ch-head">
       <span class="ch-no">1</span>
       <h2>価値観・人生観</h2>
-      <a class="ch-top" href="#toc">目次</a>
     </div>
     <p class="ch-lead">ここは長く変わらない核心。</p>
 
@@ -289,7 +339,6 @@
     <div class="ch-head">
       <span class="ch-no">2</span>
       <h2>判断と行動の原則</h2>
-      <a class="ch-top" href="#toc">目次</a>
     </div>
     <p class="ch-lead">目指す考え方・振る舞い方で、いつも実行できているわけではない。</p>
 
@@ -330,7 +379,6 @@
     <div class="ch-head">
       <span class="ch-no">3</span>
       <h2>思考特性・強み</h2>
-      <a class="ch-top" href="#toc">目次</a>
     </div>
     <div class="group">
       <ul class="dots">
@@ -351,7 +399,6 @@
     <div class="ch-head">
       <span class="ch-no">4</span>
       <h2>弱み・認知バイアス</h2>
-      <a class="ch-top" href="#toc">目次</a>
     </div>
 
     <div class="group warn">
@@ -393,7 +440,6 @@
     <div class="ch-head">
       <span class="ch-no">5</span>
       <h2>家族</h2>
-      <a class="ch-top" href="#toc">目次</a>
     </div>
 
     <div class="family">
@@ -442,7 +488,6 @@
     <div class="ch-head">
       <span class="ch-no">6</span>
       <h2>趣味・関心</h2>
-      <a class="ch-top" href="#toc">目次</a>
     </div>
     <div class="group">
       <ul class="items">
@@ -460,7 +505,6 @@
     <div class="ch-head">
       <span class="ch-no">7</span>
       <h2>基本情報</h2>
-      <a class="ch-top" href="#toc">目次</a>
     </div>
     <dl class="kv">
       <div><dt>属性</dt><dd>1982年生まれ、男性。</dd></div>
@@ -489,7 +533,6 @@
     <div class="ch-head">
       <span class="ch-no">8</span>
       <h2>AIに期待すること・<wbr>主な利用目的</h2>
-      <a class="ch-top" href="#toc">目次</a>
     </div>
 
     <h3 class="part-h">AIに期待すること</h3>
@@ -552,7 +595,6 @@
     <div class="ch-head">
       <span class="ch-no">9</span>
       <h2>扱いのルールと<wbr>詳しい記録</h2>
-      <a class="ch-top" href="#toc">目次</a>
     </div>
 
     <div class="group">
@@ -581,5 +623,48 @@
   </div>
 
 </main>
+
+<script>
+(function () {
+  var nav = document.getElementById('fixnav');
+  var chs = Array.prototype.slice.call(document.querySelectorAll('section.chapter'));
+  var no = document.getElementById('barNo'), title = document.getElementById('barTitle');
+  var btn = document.getElementById('barBtn'), menu = document.getElementById('barMenu');
+  var links = Array.prototype.slice.call(menu.querySelectorAll('a'));
+  var prog = document.getElementById('navProg');
+  var last = null, ticking = false;
+  function current() {
+    var h = nav.offsetHeight + 16, cur = -1;
+    chs.forEach(function (c, i) { if (c.getBoundingClientRect().top <= h) cur = i; });
+    var doc = document.documentElement;
+    if (window.innerHeight + window.scrollY >= doc.scrollHeight - 4) cur = chs.length - 1;
+    return cur;
+  }
+  function update() {
+    ticking = false;
+    var doc = document.documentElement, max = doc.scrollHeight - window.innerHeight;
+    prog.style.width = (max > 0 ? Math.min(100, window.scrollY / max * 100) : 0) + '%';
+    var cur = current();
+    if (cur === last) return;
+    last = cur;
+    if (cur < 0) { no.hidden = true; title.textContent = '個人プロフィール'; }
+    else {
+      var c = chs[cur];
+      no.hidden = false; no.textContent = c.querySelector('.ch-no').textContent;
+      no.classList.toggle('warn', c.classList.contains('warn'));
+      title.textContent = c.querySelector('h2').textContent;
+    }
+    links.forEach(function (a, i) { a.classList.toggle('on', i === cur); });
+  }
+  function setOpen(open) { menu.hidden = !open; btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+  btn.addEventListener('click', function (e) { e.preventDefault(); setOpen(menu.hidden); });
+  links.forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+  document.addEventListener('click', function (e) { if (!nav.contains(e.target)) setOpen(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
 </body>
 </html>
